@@ -132,7 +132,7 @@ func main() {
 		}
 
 		data.Tasks = dbQueryByOrigin(db, origin)
-		return c.Render(http.StatusOK, "task-list", data)
+		return c.Render(http.StatusOK, "index", data)
 	})
 
 	ctx.POST("/delete-task", func(c echo.Context) error {

@@ -1,6 +1,6 @@
 # go-todolist
 Todo list web app made with sqlite and htmx using golang.
 
-![](screenshots/capture.png "screenshot")
+![Picture of my cool todo app](screenshots/capture.png "screenshot")
 <hr>
 
