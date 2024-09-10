@@ -1,0 +1,90 @@
+{{ block "index" . }}
+<html lang="en">
+<head>
+    <title>Tasks</title>
+    <meta charset="utf-8">
+	<script src="https://unpkg.com/htmx.org@2.0.2" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ" crossorigin="anonymous"></script>		
+	{{ template "index-stylesheet" . }}
+</head>	
+<body>
+	<main> 
+		<header><h1>[TASKS]</h1><a href="https://cordelw.com:8000"><h6>cordelw.com</h6></a></header>
+		<div>
+			Create a new task
+			<form id="task-create-form">
+				<input type="text" name="task-input" minlength=1 maxlength=120 placeholder="Task to do">
+				<button type="submit" 
+					name="task-submit" 
+					hx-target="#task-list-container" 
+					hx-post="/create-task"
+					>Create Task
+				</button>
+			</form>
+		</div>	
+		<ul id="task-list-container">{{ template "task-list" . }}</ul>
+	</main>
+</body>
+</html>
+{{ end }}
+
+{{ block "task-list" . }}
+	{{ range .Tasks }}
+		<li>
+			<form>
+				<input type="hidden" name="task-id" value={{.Id}}>
+				<label name="task">{{ .Text }}</label>
+				<button name="complete-task-button" 
+					alt="Complete."
+					hx-post="/delete-task"
+					hx-target="#task-list-container"
+					>&check;</button>
+			</form>		
+		</li>
+	{{ end }}
+{{ end }}
+
+{{ block "index-stylesheet" . }}
+<style>
+	main {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	header {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	header a {
+		color: #000;
+		text-decoration:none;
+		align-self: flex-end;
+	} header a:hover {
+		text-decoration: underline;
+	}
+
+	#task-create-form {
+		display: flex;
+	}
+
+	#task-create-form input {
+		padding: 10px;
+		flex-grow: 1;
+	}
+
+	#task-list-container {
+		display: flex;
+		flex-direction: column;
+		padding: 0px;
+		list-style: none;
+	}
+	
+	#task-list-container form {
+		display: flex;
+		margin:0px;
+		padding:10px 20px;
+		justify-content: space-between;
+		border-top: 1px solid #000;
+	}
+</style>
+{{ end }}
