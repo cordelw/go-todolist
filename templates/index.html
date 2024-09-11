@@ -37,7 +37,7 @@ Create a new task
 				<label name="task">{{ .Text }}</label>
 				<button name="complete-task-button" 
 					alt="Complete."
-					hx-post="/delete-task"
+					hx-post="/complete-task"
 					hx-target="#task-list-container"
 					>&check;</button>
 			</form>		

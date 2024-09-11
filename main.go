@@ -36,28 +36,10 @@ type Task struct {
 	Text string
 }
 
-func dbQueryAll(db *sql.DB) []Task {
+func dbQueryByOriginUncompleted(db *sql.DB, origin string) []Task {
 	var tasks []Task
 
-	rows, err := db.Query("SELECT id, text FROM tasks")
-	if err != nil {
-		panic(err)
-	}
-
-	for rows.Next() {
-		var task Task
-		rows.Scan(&task.Id, &task.Text)
-
-		tasks = append(tasks, task)
-	}
-
-	return tasks
-}
-
-func dbQueryByOrigin(db *sql.DB, origin string) []Task {
-	var tasks []Task
-
-	rows, err := db.Query("SELECT id, task FROM tasks WHERE origin=?", origin)
+	rows, err := db.Query("SELECT id, text FROM tasks WHERE origin=? AND completed=false", origin)
 	if err != nil {
 		panic(err)
 	}
@@ -93,7 +75,8 @@ func main() {
 		CREATE TABLE IF NOT EXISTS tasks (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		origin TEXT NOT NULL,
-		task TEXT NOT NULL
+		completed INTEGER NOT NULL,
+		text TEXT NOT NULL
 		);`
 
 	db, err := sql.Open("sqlite", dsn)
@@ -114,7 +97,7 @@ func main() {
 	ctx.GET("/", func(c echo.Context) error {
 		origin := c.RealIP()
 
-		data.Tasks = dbQueryByOrigin(db, origin)
+		data.Tasks = dbQueryByOriginUncompleted(db, origin)
 		return c.Render(http.StatusOK, "index", data)
 	})
 
@@ -126,29 +109,34 @@ func main() {
 			return c.Render(http.StatusBadRequest, "body", nil)
 		}
 
-		_, err := db.Exec(`INSERT INTO tasks VALUES(NULL, ?, ?)`, origin, taskInput)
+		_, err := db.Exec(`INSERT INTO tasks VALUES(NULL, ?, false, ?)`, origin, taskInput)
 		if err != nil {
 			return c.Render(http.StatusInternalServerError, "body", nil)
 		}
 
-		data.Tasks = dbQueryByOrigin(db, origin)
+		data.Tasks = dbQueryByOriginUncompleted(db, origin)
 		return c.Render(http.StatusOK, "index", data)
 	})
 
-	ctx.POST("/delete-task", func(c echo.Context) error {
+	ctx.POST("/complete-task", func(c echo.Context) error {
 		origin := c.RealIP()
 		taskID := c.FormValue("task-id")
 
 		var realorigin string
-		db.QueryRow("SELECT origin FROM tasks WHERE ID=?", taskID).Scan(&realorigin)
+		db.QueryRow("SELECT origin FROM tasks WHERE ID=? AND completed=false", taskID).Scan(&realorigin)
 
 		if origin != realorigin {
 			return c.Render(http.StatusBadRequest, "body", nil)
 		}
 
-		db.Exec("DELETE FROM tasks WHERE id=?", taskID)
+		db.Exec(`
+			UPDATE tasks
+			SET completed=true
+			WHERE id=?
+		`,
+			taskID)
 
-		data.Tasks = dbQueryByOrigin(db, origin)
+		data.Tasks = dbQueryByOriginUncompleted(db, origin)
 		return c.Render(http.StatusOK, "task-list", data)
 	})
 
