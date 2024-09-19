@@ -9,24 +9,22 @@
 <body>
 	<main> 
 		<header><h1>[TASKS]</h1><a href="https://cordelw.com"><h6>cordelw.com</h6></a></header>
-		<div id="task-interact-root">{{ template "task-interact-root" . }}</div>
+		<div id="task-interact-root">
+			Create a new task
+			<form id="task-create-form">
+				<input type="text" name="task-input" minlength=1 maxlength=120 placeholder="Task to do">
+				<button type="submit" 
+					name="task-submit" 
+					hx-post="/create-task"
+					hx-target="body"
+					>Create Task
+				</button>
+			</form>
+			<ul id="task-list-container">{{ template "task-list" . }}</ul>
+		</div>
 	</main>
 </body>
 </html>
-{{ end }}
-
-{{ block "task-interact-root" . }}
-Create a new task
-<form id="task-create-form">
-	<input type="text" name="task-input" minlength=1 maxlength=120 placeholder="Task to do">
-	<button type="submit" 
-		name="task-submit" 
-		hx-post="/create-task"
-		hx-target="body"
-		>Create Task
-	</button>
-</form>
-<ul id="task-list-container">{{ template "task-list" . }}</ul>
 {{ end }}
 
 {{ block "task-list" . }}
@@ -67,6 +65,11 @@ Create a new task
 
 	#task-create-form {
 		display: flex;
+	}
+
+	#task-list-options {
+		display: flex;
+		justify-content: space-between;
 	}
 
 	#task-create-form input {

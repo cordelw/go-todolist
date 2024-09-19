@@ -39,7 +39,7 @@ type Task struct {
 func dbQueryByOriginUncompleted(db *sql.DB, origin string) []Task {
 	var tasks []Task
 
-	rows, err := db.Query("SELECT id, text FROM tasks WHERE origin=? AND completed=false", origin)
+	rows, err := db.Query("SELECT id, text FROM tasks WHERE origin=? AND completed=false ORDER BY id DESC", origin)
 	if err != nil {
 		panic(err)
 	}
