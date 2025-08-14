@@ -1,0 +1,77 @@
+{{ define "login" }}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Log In</title>
+        <link rel="shortcut icon" href="/static/images/favicon.ico" />
+        <script src="/static/javascript/htmx.js"></script>
+        <script src="/static/javascript/redirect-4.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            #error-label {
+            }
+            main {
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            form {
+                width: 25vw;
+                min-height: 50vh;
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: column;
+            }
+
+            form label {
+                margin-top: 10px;
+            }
+
+            #form-submit {
+                margin: 30px 0px;
+                padding: 7px;
+                margin-left: auto;
+                width: fit-content;
+            }
+        </style>
+    </head>
+    <body hx-ext="response-targets">
+        <main>
+            <form
+                hx-post="/api/login-user"
+                hx-target="#error-label"
+                hx-validate="true"
+            >
+                <h2>Sign in to your account.</h2>
+                <label id="error-label"></label>
+                <label for="username">Username: </label>
+                <input
+                    type="text"
+                    id="username-input"
+                    name="username"
+                    placeholder="username"
+                    required
+                />
+                <label for="password">Password: </label>
+                <input
+                    type="password"
+                    id="password-input"
+                    name="password"
+                    placeholder="password"
+                    required
+                />
+                <button id="form-submit" type="submit">Log in</button>
+                <a href="/register">Haven't created an account yet? Sign up</a>
+            </form>
+        </main>
+    </body>
+</html>
+{{ end }}

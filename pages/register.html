@@ -1,0 +1,87 @@
+{{ define "register" }}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sign Up</title>
+        <link rel="shortcut icon" href="/static/images/favicon.ico" />
+        <script src="/static/javascript/htmx.js"></script>
+        <script src="/static/javascript/redirect-4.js"></script>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+            #error-label {
+            }
+            main {
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            form {
+                width: 25vw;
+                min-height: 50vh;
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: column;
+            }
+
+            form label {
+                margin-top: 10px;
+            }
+
+            #form-submit {
+                margin: 30px 0px;
+                padding: 7px;
+                margin-left: auto;
+                width: fit-content;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <form
+                hx-post="/api/register-user"
+                hx-target="#error-label"
+                hx-swap="innerHTML"
+                hx-validate="true"
+            >
+                <h2>Create an account.</h2>
+                <label id="error-label"></label>
+                <label for="username">Username: </label>
+                <input
+                    type="text"
+                    id="username-input"
+                    name="username"
+                    placeholder="username"
+                    required
+                />
+                <label for="password">Password: </label>
+                <input
+                    type="password"
+                    id="password-input"
+                    name="password"
+                    placeholder="password"
+                    required
+                />
+                <label for="password-confirm">Confirm your password: </label>
+                <input
+                    type="password"
+                    id="password-confirm-input"
+                    name="password-confirm"
+                    placeholder="password"
+                    required
+                />
+                <button id="form-submit" type="submit">Sign up</button>
+                <a href="/login">Already have an account? Sign in.</a>
+            </form>
+        </main>
+    </body>
+</html>
+{{ end }}

@@ -1,110 +1,186 @@
-{{ block "index" . }}
+{{ define "index"}}
+<!doctype html>
 <html lang="en">
     <head>
-        <title>Tasks</title>
-        <meta charset="utf-8" />
-        <script
-            src="https://unpkg.com/htmx.org@2.0.2"
-            integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
-            crossorigin="anonymous"
-        ></script>
-        {{ template "index-stylesheet" . }}
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TASKS Todo Mgt</title>
+        <link rel="shortcut icon" href="/static/images/favicon.ico" />
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: overline underline;
+            }
+
+            /* NAVBAR */
+            nav {
+                top: 0;
+                position: sticky;
+                display: flex;
+                justify-content: end;
+                align-items: center;
+                border-bottom: 1px solid black;
+                background-color: white;
+                z-index: 999;
+            }
+            nav h2 {
+                margin-right: auto;
+            }
+            nav a {
+                margin: 10px;
+            }
+
+            /* INTRO SECTION*/
+            #section-intro {
+                min-height: 80vh;
+                font-size: 3rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                text-align: center;
+                background-image: url(/static/images/bg0.png);
+                background-attachment: fixed;
+            }
+
+            #intro-link {
+                background-color: black;
+                color: white;
+                padding: 10px;
+                border-radius: 8px;
+            }
+            #intro-link:hover {
+                background-color: white;
+                color: black;
+                text-decoration: none;
+            }
+
+            .image-container {
+                flex: 2;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .desc-container {
+                height: inherit%;
+                flex: 3;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+            }
+
+            .center {
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex: 1;
+            }
+
+            /* INTERFACE SECTION*/
+            #section-interface {
+                min-height: 69vh;
+                background-color: black;
+                font-size: 2rem;
+                color: white;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            /* FLEXIBILITY SECTION */
+            #section-flexibility {
+                min-height: 69vh;
+                font-size: 2rem;
+                background-image: url(/static/images/bg1.png);
+                display: flex;
+                flex-direction: row-reverse;
+                flex-wrap: wrap;
+            }
+
+            /* RELIABILITY SECTION */
+            #section-reliability {
+                min-height: 50vh;
+                font-size: 2rem;
+                background-color: black;
+                color: white;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* FOOTER */
+            footer {
+                background-color: blue;
+                color: white;
+            }
+        </style>
     </head>
     <body>
+        <nav>
+            <h2>[TASKS]</h2>
+            <a href="#">Help</a>
+            <a href="/app">Sign In / Up</a>
+        </nav>
         <main>
-            <header>
-                <h1>[TASKS]</h1>
-                <a href="http://cordelw.com"><h6>cordelw.com</h6></a>
-            </header>
-            <div id="task-interact-root">
-                Create a new task
-                <form id="task-create-form">
-                    <input
-                        type="text"
-                        name="task-input"
-                        minlength="1"
-                        maxlength="120"
-                        placeholder="Task to do"
-                    />
-                    <button
-                        type="submit"
-                        name="task-submit"
-                        hx-post="/create-task"
-                        hx-target="main"
-                    >
-                        Create Task
-                    </button>
-                </form>
-                <ul id="task-list-container">
-                    {{ template "task-list" . }}
-                </ul>
+            <div id="section-intro">
+                <h1>
+                    Welcome to the next generation of todo-list management
+                    systems.
+                </h1>
+                <a id="intro-link" href="/app">Get Started</a>
+            </div>
+            <div id="section-interface">
+                <div class="image-container">
+                    <img src="/static/images/list1.png" />
+                </div>
+                <div class="desc-container">
+                    <h1>Sleek Interface</h1>
+                    <p class="center">
+                        Navigation of our state-of-the-art todo-list management
+                        interface is made a breeze, with a focus on solving the
+                        REAL problems of a modern todo-list enthusiuast.
+                    </p>
+                </div>
+            </div>
+            <div id="section-flexibility">
+                <div class="image-container">
+                    <img src="/static/images/restore1.png" />
+                </div>
+                <div class="desc-container">
+                    <h1>Real Flexibility</h1>
+                    <p class="center">
+                        Edit any task at any time. Or even go back in time to
+                        restore previously completed tasks on your list, just in
+                        case you decide that you're not so sure!
+                    </p>
+                </div>
+            </div>
+            <div id="section-reliability">
+                <h1>Built on reliability</h1>
+                <p class="center" tore previou>
+                    Our todo-list management solution is built on well
+                    established, industry-standard technologies like the Go
+                    programming language, SQLite database engine, and HTMX
+                    library.
+                </p>
             </div>
         </main>
+        <footer>
+            <a href="http://cordelw.com">CORDELW.COM</a> |
+            <a href="https://go.dev/">GOLANG</a> |
+            <a href="https://sqlite.org/index.html">SQLITE</a> |
+            <a href="https://htmx.org/">HTMX</a>
+        </footer>
     </body>
 </html>
-{{ end }} {{ block "task-list" . }} {{ range .Tasks }}
-<li>
-    <form>
-        <input type="hidden" name="task-id" value="{{.Id}}" />
-        <label name="task">{{ .Text }}</label>
-        <button
-            name="complete-task-button"
-            alt="Complete."
-            hx-post="/complete-task"
-            hx-target="main"
-        >
-            &check;
-        </button>
-    </form>
-</li>
-{{ end }} {{ end }} {{ block "index-stylesheet" . }}
-<style>
-    main {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    header {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    header a {
-        color: #000;
-        text-decoration: none;
-        align-self: flex-end;
-    }
-    header a:hover {
-        text-decoration: underline;
-    }
-
-    #task-create-form {
-        display: flex;
-    }
-
-    #task-list-options {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    #task-create-form input {
-        padding: 10px;
-        flex-grow: 1;
-    }
-
-    #task-list-container {
-        display: flex;
-        flex-direction: column;
-        padding: 0px;
-        list-style: none;
-    }
-
-    #task-list-container form {
-        display: flex;
-        margin: 0px;
-        padding: 10px 20px;
-        justify-content: space-between;
-        border-top: 1px solid #000;
-    }
-</style>
 {{ end }}

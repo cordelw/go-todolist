@@ -2,9 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"gotodo/handler"
+	"gotodo/controller"
 	"gotodo/middleware"
-	"gotodo/tables"
+	"gotodo/models"
 	"log"
 	"net/http"
 
@@ -23,17 +23,35 @@ func main() {
 	defer db.Close()
 
 	// Execute database schemas
-	if _, err := db.Exec(tables.TaskSchema); err != nil {
+	if _, err := db.Exec(models.TasksSchema); err != nil {
+		log.Fatal(err)
+	}
+
+	if _, err := db.Exec(models.UsersSchema); err != nil {
 		log.Fatal(err)
 	}
 
 	// Router + routes
 	router := http.NewServeMux()
-	ctx := handler.NewContext(db)
+	staticfs := http.FileServer(http.Dir("./static"))
+	router.Handle("GET /static/", http.StripPrefix("/static/", staticfs))
+	c := controller.NewController(db)
 
-	router.HandleFunc("GET /", ctx.ServeIndexPage)
-	router.HandleFunc("POST /create-task", ctx.ApiCreateTask)
-	router.HandleFunc("POST /complete-task", ctx.ApiCompleteTask)
+	// Static pages
+	router.HandleFunc("GET /", controller.ServeIndexPage)
+	router.HandleFunc("GET /register", c.ServeRegisterPage)
+	router.HandleFunc("GET /login", c.ServeLoginPage)
+	router.HandleFunc("GET /app", c.RequiresAuth(c.ServeAppPage))
+
+	// API
+	// auth
+	router.HandleFunc("POST /api/register-user", c.ApiUserRegister)
+	router.HandleFunc("POST /api/login-user", c.ApiUserLogin)
+	router.HandleFunc("POST /api/logout-user", c.ApiUserLogout)
+
+	// tasks
+	router.HandleFunc("POST /api/create-task", c.RequiresAuth(c.ApiTaskCreate))
+	router.HandleFunc("POST /api/complete-task", c.RequiresAuth(c.ApiTaskComplete))
 
 	// HTTP server
 	server := http.Server{
