@@ -4,22 +4,29 @@
     <head>
         <title>Tasks</title>
         <meta charset="utf-8" />
-        <link rel="shortcut icon" href="./static/images/favicon.ico" />
+        <link rel="shortcut icon" href="/static/images/favicon.ico" />
         <script src="/static/javascript/htmx.js"></script>
-        {{ template "index-stylesheet" . }}
+        <script src="/static/javascript/darkmode.js" defer></script>
+        <link rel="stylesheet" href="/static/css/app-style.css" />
     </head>
     <body>
+        <header>
+            <h1>
+                <a href="#" onclick="toggleDarkmode()">[TASKS]</a>
+            </h1>
+            <h4>Welcome back {{ .Username }}.</h4>
+            <button hx-post="/api/logout-user">Logout</button>
+        </header>
         <main>
-            <header>
-                <h1>[TASKS]</h1>
-                <!--a href="http://cordelw.com"><h6>cordelw.com</h6></!a-->
-                <h4>Welcome back {{ .Username }}.</h4>
-                <button hx-post="/api/logout-user">Logout</button>
-            </header>
             <div id="task-interact-root">
                 <div id="task-form-container">
                     Create a new task
-                    <form id="task-create-form">
+                    <form
+                        id="task-create-form"
+                        hx-post="/api/create-task"
+                        hx-target="body"
+                        hx-validate="true"
+                    >
                         <input
                             type="text"
                             name="task-input"
@@ -28,98 +35,40 @@
                             placeholder="Task to complete"
                             required
                         />
-                        <button
-                            type="submit"
-                            name="task-submit"
-                            hx-post="/api/create-task"
-                            hx-target="main"
-                            hx-validate="true"
-                        >
+                        <button type="submit" name="task-submit">
                             Create Task
                         </button>
                     </form>
                 </div>
                 <ul id="task-list-container">
-                    {{ template "task-list" . }}
+                    {{ range .Tasks }} {{ template "list-item" . }} {{ end }}
                 </ul>
             </div>
         </main>
     </body>
 </html>
-{{ end }} {{ block "task-list" . }} {{ range .Tasks }}
+{{ end }} {{ block "list-item" . }}
 <li>
-    <form>
+    <form class="list-item-form">
         <input type="hidden" name="task-id" value="{{.Id}}" />
-        <label id="task-label" name="task">{{ .Text }}</label>
+        <label class="task-item-label" id="list-item-label-{{.Id}}" name="task"
+            >{{ .Text }}</label
+        >
+        <input
+            type="hidden"
+            class="task-item-input"
+            name="task-edit"
+            value="{{.Text}}"
+        />
         <button name="edit-task-button" alt="Edit.">&equiv;</button>
         <button
             name="complete-task-button"
-            alt="Complete."
             hx-post="/api/complete-task"
-            hx-target="main"
+            hx-target="body"
+            alt="Complete."
         >
             &check;
         </button>
     </form>
 </li>
-{{ end }} {{ end }} {{ block "index-stylesheet" . }}
-<style>
-    main {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    header {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-    }
-
-    header h1 {
-        margin-right: auto;
-    }
-
-    header button {
-        margin-left: 14px;
-    }
-
-    #task-form-container {
-        background-color: white;
-        top: 0;
-        position: sticky;
-    }
-
-    #task-create-form {
-        display: flex;
-    }
-
-    #task-list-options {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    #task-create-form input {
-        padding: 10px;
-        flex-grow: 1;
-    }
-
-    #task-list-container {
-        display: flex;
-        flex-direction: column;
-        padding: 0px;
-        list-style: none;
-    }
-
-    #task-list-container form {
-        display: flex;
-        margin: 0px;
-        padding: 10px 20px;
-        justify-content: end;
-        border-top: 1px solid #000;
-    }
-
-    #task-list-container #task-label {
-        margin-right: auto;
-    }
-</style>
 {{ end }}

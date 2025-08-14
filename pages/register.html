@@ -15,6 +15,13 @@
                 padding: 0;
                 overflow: hidden;
             }
+            h1 a {
+                color: black;
+                text-decoration: none;
+            }
+            h1 a:hover {
+                text-decoration: underline;
+            }
             #error-label {
             }
             main {
@@ -31,7 +38,11 @@
                 flex-wrap: wrap;
                 flex-direction: column;
             }
-
+            @media (max-width: 900px) {
+                form {
+                    width: auto;
+                }
+            }
             form label {
                 margin-top: 10px;
             }
@@ -52,6 +63,7 @@
                 hx-swap="innerHTML"
                 hx-validate="true"
             >
+                <h1><a href="/">[TASKS]</a></h1>
                 <h2>Create an account.</h2>
                 <label id="error-label"></label>
                 <label for="username">Username: </label>

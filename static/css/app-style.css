@@ -1,0 +1,69 @@
+:root {
+    --bg: white;
+    --fg: black;
+}
+
+.dark-mode {
+    --bg: black;
+    --fg: white;
+}
+
+a {
+    color: var(--fg);
+    text-decoration: none;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--fg);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+header h1 {
+    margin-right: auto;
+}
+
+header button {
+    margin-left: 14px;
+}
+
+#task-form-container {
+    background-color: var(--bg);
+    top: 0;
+    position: sticky;
+}
+
+#task-create-form {
+    display: flex;
+}
+
+#task-create-form input {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+#task-list-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    list-style: none;
+}
+
+.list-item-form {
+    display: flex;
+    margin: 0px;
+    padding: 10px 20px;
+    justify-content: end;
+    border-top: 1px solid var(--fg);
+}
+
+.task-item-label {
+    margin-right: auto;
+}
