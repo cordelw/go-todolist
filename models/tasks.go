@@ -20,10 +20,28 @@ type Task struct {
 	Complete bool
 }
 
-func TaskQueryByUserID(db *sql.DB, userId string) []Task {
+func TaskQueryIncompleteByUserID(db *sql.DB, userId string) []Task {
 	var tasks []Task
 
 	rows, err := db.Query("SELECT id, userid, text FROM tasks WHERE completed=false AND userid=? ORDER BY id DESC", userId)
+	if err != nil {
+		return tasks
+	}
+
+	for rows.Next() {
+		var task Task
+		rows.Scan(&task.Id, &task.UserId, &task.Text)
+
+		tasks = append(tasks, task)
+	}
+
+	return tasks
+}
+
+func TaskQueryCompleteByUserID(db *sql.DB, userId string) []Task {
+	var tasks []Task
+
+	rows, err := db.Query("SELECT id, userid, text FROM tasks WHERE completed=true AND userid=? ORDER BY id DESC", userId)
 	if err != nil {
 		return tasks
 	}
@@ -54,7 +72,17 @@ func TaskCreate(db *sql.DB, userId string, text string) error {
 	return err
 }
 
+func TaskUpdate(db *sql.DB, taskId string, newText string) error {
+	_, err := db.Exec("UPDATE tasks SET text=? WHERE id=?", newText, taskId)
+	return err
+}
+
 func TaskComplete(db *sql.DB, taskId string) error {
 	_, err := db.Exec("UPDATE tasks SET completed='1' WHERE id=?", taskId)
+	return err
+}
+
+func TaskUncomplete(db *sql.DB, taskId string) error {
+	_, err := db.Exec("UPDATE tasks SET completed='0' WHERE id=?", taskId)
 	return err
 }

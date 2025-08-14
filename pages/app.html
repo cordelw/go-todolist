@@ -7,6 +7,7 @@
         <link rel="shortcut icon" href="/static/images/favicon.ico" />
         <script src="/static/javascript/htmx.js"></script>
         <script src="/static/javascript/darkmode.js" defer></script>
+        <script src="/static/javascript/manipforms.js" defer></script>
         <link rel="stylesheet" href="/static/css/app-style.css" />
     </head>
     <body>
@@ -26,6 +27,7 @@
                         hx-post="/api/create-task"
                         hx-target="body"
                         hx-validate="true"
+                        autocomplete="off"
                     >
                         <input
                             type="text"
@@ -35,13 +37,37 @@
                             placeholder="Task to complete"
                             required
                         />
-                        <button type="submit" name="task-submit">
-                            Create Task
-                        </button>
+                        <button type="submit">Create Task</button>
                     </form>
                 </div>
-                <ul id="task-list-container">
+                <a
+                    id="show-complete-button"
+                    href="#"
+                    style="display: block; width: inherit; text-align: center"
+                    onclick="showComplete()"
+                    >show finished tasks</a
+                >
+                <a
+                    id="show-complete-back"
+                    href="/app"
+                    style="
+                        display: block;
+                        width: inherit;
+                        text-align: center;
+                        display: none;
+                    "
+                    >back</a
+                >
+                <ul id="unfinished-tasks" class="task-list-container">
                     {{ range .Tasks }} {{ template "list-item" . }} {{ end }}
+                </ul>
+                <ul
+                    id="finished-tasks"
+                    class="task-list-container"
+                    style="display: none"
+                >
+                    {{ range .Finished }} {{template "finished-item" .}} {{ end
+                    }}
                 </ul>
             </div>
         </main>
@@ -49,25 +75,79 @@
 </html>
 {{ end }} {{ block "list-item" . }}
 <li>
-    <form class="list-item-form">
+    <form class="list-item-form" id="item-form-{{.Id}}" autocomplete="off">
         <input type="hidden" name="task-id" value="{{.Id}}" />
-        <label class="task-item-label" id="list-item-label-{{.Id}}" name="task"
+
+        <!-- Visible text label -->
+        <label class="task-item-label" id="item-label-{{.Id}}" name="task"
             >{{ .Text }}</label
         >
+
+        <!-- Hidden task text input -->
         <input
-            type="hidden"
+            name="task-new"
             class="task-item-input"
-            name="task-edit"
+            id="item-input-{{.Id}}"
             value="{{.Text}}"
+            hidden
         />
-        <button name="edit-task-button" alt="Edit.">&equiv;</button>
+
+        <!-- Default Buttons -->
+        <button
+            name="edit-task-button"
+            id="item-edit-button-{{.Id}}"
+            alt="Edit."
+            type="button"
+            onclick="enableTaskEdit({{.Id}})"
+        >
+            &#9998;
+        </button>
         <button
             name="complete-task-button"
+            id="item-complete-button-{{.Id}}"
             hx-post="/api/complete-task"
             hx-target="body"
             alt="Complete."
         >
             &check;
+        </button>
+
+        <!-- Task edit buttons -->
+        <button
+            name="edit-cancel-button"
+            id="item-unedit-button-{{.Id}}"
+            alt="Cancel."
+            type="button"
+            onclick="disableTaskEdit({{.Id}})"
+            hidden
+        >
+            &Cross;
+        </button>
+        <button
+            name="edit-confirm-button"
+            id="item-update-button-{{.Id}}"
+            alt="Finalize."
+            hx-post="/api/update-task"
+            hx-target="body"
+            type="button"
+            hidden
+        >
+            &check;
+        </button>
+    </form>
+</li>
+{{ end }} {{block "finished-item" .}}
+<li id="list-completed-{{.Id}}">
+    <form class="list-item-form">
+        <input type="hidden" name="task-id" value="{{.Id}}" />
+        <label class="task-item-label" style="text-decoration: line-through"
+            >{{.Text}}</label
+        >
+        <button
+            hx-post="/api/uncomplete-task"
+            hx-target="#list-completed-{{.Id}}"
+        >
+            &#10226;
         </button>
     </form>
 </li>

@@ -18,7 +18,8 @@ func (c *Controller) ServeAppPage(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Username string
 		Tasks    []models.Task
-	}{userName, models.TaskQueryByUserID(c.DB, userId)}
+		Finished []models.Task
+	}{userName, models.TaskQueryIncompleteByUserID(c.DB, userId), models.TaskQueryCompleteByUserID(c.DB, userId)}
 
 	RenderHTMLTemplate("app", "./pages/app.html", w, data)
 }

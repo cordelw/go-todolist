@@ -52,6 +52,8 @@ func main() {
 	// tasks
 	router.HandleFunc("POST /api/create-task", c.RequiresAuth(c.ApiTaskCreate))
 	router.HandleFunc("POST /api/complete-task", c.RequiresAuth(c.ApiTaskComplete))
+	router.HandleFunc("POST /api/uncomplete-task", c.RequiresAuth(c.ApiTaskUncomplete))
+	router.HandleFunc("POST /api/update-task", c.RequiresAuth(c.ApiTaskUpdate))
 
 	// HTTP server
 	server := http.Server{
