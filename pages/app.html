@@ -40,24 +40,20 @@
                         <button type="submit">Create Task</button>
                     </form>
                 </div>
-                <a
-                    id="show-complete-button"
-                    href="#"
-                    style="display: block; width: inherit; text-align: center"
-                    onclick="showComplete()"
-                    >show finished tasks</a
-                >
-                <a
-                    id="show-complete-back"
-                    href="/app"
-                    style="
-                        display: block;
-                        width: inherit;
-                        text-align: center;
-                        display: none;
-                    "
-                    >back</a
-                >
+                {{if .Finished }}
+                <div id="view-selector">
+                    <a
+                        id="show-complete-button"
+                        href="#"
+                        onclick="showComplete()"
+                        >show finished tasks</a
+                    >
+                    <a id="show-back-button" href="/app" style="display: none"
+                        >back</a
+                    >
+                </div>
+                {{end}}
+
                 <ul id="unfinished-tasks" class="task-list-container">
                     {{ range .Tasks }} {{ template "list-item" . }} {{ end }}
                 </ul>

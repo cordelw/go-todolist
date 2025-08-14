@@ -41,10 +41,16 @@ header button {
     margin-left: 14px;
 }
 
+ul {
+    margin: 0;
+    padding: 0;
+}
+
 #task-form-container {
     background-color: var(--bg);
     top: 0;
     position: sticky;
+    margin-bottom: 20px;
 }
 
 #task-create-form {
@@ -56,10 +62,23 @@ header button {
     flex-grow: 1;
 }
 
+#view-selector {
+    display: flex;
+    width: inherit;
+    align-content: center;
+}
+#view-selector a {
+    margin: 0 auto;
+}
+#view-selector a:hover {
+    text-decoration: underline;
+}
+
 .task-list-container {
     display: flex;
     flex-direction: column;
     padding: 0px;
+    margin-top: 20px;
     list-style: none;
 }
 
