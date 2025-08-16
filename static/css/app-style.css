@@ -1,12 +1,17 @@
 :root {
     --bg: white;
     --fg: black;
+    --bga: #c7c7d4;
+    --fga: #d7dfe4;
+    line-height: 1.8;
     font-size: 1rem;
 }
 
 .dark-mode {
     --bg: black;
     --fg: white;
+    --bga: #262829;
+    --fga: #171919;
 }
 
 a {
@@ -19,6 +24,12 @@ body {
     color: var(--fg);
     max-width: 800px;
     margin: 0 auto;
+}
+
+@media (max-width: 800px), (pointer: course) {
+    :root {
+        font-size: 2rem;
+    }
 }
 
 input,
@@ -55,6 +66,7 @@ ul {
 
 #task-create-form {
     display: flex;
+    flex-wrap: wrap;
 }
 
 #task-create-form input {
@@ -84,14 +96,18 @@ ul {
 
 .list-item-form {
     display: flex;
-    margin: 0px;
+    margin: 5px 0;
     padding: 10px 20px;
     justify-content: end;
-    border-top: 1px solid var(--fg);
+    /*border-top: 1px solid var(--fg);*/
+    border: 1px solid var(--bga);
+    border-radius: 8px;
+    background-color: var(--fga);
 }
 
 .task-item-label {
     margin-right: auto;
+    overflow: hidden;
 }
 
 .task-item-input {

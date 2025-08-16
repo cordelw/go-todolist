@@ -6,40 +6,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>TASKS Todo Mgt</title>
         <link rel="shortcut icon" href="/static/images/favicon.ico" />
+        <link rel="stylesheet" href="/static/css/nav-style.css" />
         <style>
             * {
                 margin: 0px;
                 padding: 0px;
             }
 
-            a {
-                color: inherit;
-                text-decoration: none;
-            }
-
-            a:hover {
-                text-decoration: overline underline;
-            }
-
-            /* NAVBAR */
-            nav {
-                top: 0;
-                position: sticky;
-                display: flex;
-                justify-content: end;
-                align-items: center;
-                border-bottom: 1px solid black;
-                background-color: white;
-                z-index: 999;
-            }
-            nav h2 {
-                margin-right: auto;
-            }
-            nav a {
-                margin: 10px;
-            }
-
             /* INTRO SECTION*/
+            main {
+                background-image: url(/static/images/bg0.png);
+                background-attachment: fixed;
+            }
+
             #section-intro {
                 min-height: 80vh;
                 font-size: 3rem;
@@ -48,8 +27,6 @@
                 justify-content: space-evenly;
                 align-items: center;
                 text-align: center;
-                background-image: url(/static/images/bg0.png);
-                background-attachment: fixed;
             }
 
             #intro-link {
@@ -128,7 +105,7 @@
     <body>
         <nav>
             <h2>[TASKS]</h2>
-            <a href="#">Help</a>
+            <a href="/faq">FAQ</a>
             <a href="/app">Sign In / Up</a>
         </nav>
         <main>
@@ -154,7 +131,7 @@
             </div>
             <div id="section-flexibility">
                 <div class="image-container">
-                    <img src="/static/images/restore1.png" />
+                    <img src="/static/images/restore1.jpg" />
                 </div>
                 <div class="desc-container">
                     <h1>Real Flexibility</h1>

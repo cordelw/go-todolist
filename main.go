@@ -39,9 +39,10 @@ func main() {
 
 	// Static pages
 	router.HandleFunc("GET /", controller.ServeIndexPage)
+	router.HandleFunc("GET /faq", controller.ServeFaqPage)
+
 	router.HandleFunc("GET /register", c.ServeRegisterPage)
 	router.HandleFunc("GET /login", c.ServeLoginPage)
-	router.HandleFunc("GET /app", c.RequiresAuth(c.ServeAppPage))
 
 	// API
 	// auth
@@ -54,6 +55,7 @@ func main() {
 	router.HandleFunc("POST /api/complete-task", c.RequiresAuth(c.ApiTaskComplete))
 	router.HandleFunc("POST /api/uncomplete-task", c.RequiresAuth(c.ApiTaskUncomplete))
 	router.HandleFunc("POST /api/update-task", c.RequiresAuth(c.ApiTaskUpdate))
+	router.HandleFunc("GET /app", c.RequiresAuth(c.ServeAppPage))
 
 	// HTTP server
 	server := http.Server{

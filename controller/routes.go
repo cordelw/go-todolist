@@ -11,6 +11,19 @@ func ServeIndexPage(w http.ResponseWriter, r *http.Request) {
 	RenderHTMLTemplate("index", "./pages/index.html", w, nil)
 }
 
+func ServeFaqPage(w http.ResponseWriter, r *http.Request) {
+	RenderHTMLTemplate("faq", "./pages/faq.html", w, nil)
+}
+
+// Sign in / up
+func (c *Controller) ServeRegisterPage(w http.ResponseWriter, r *http.Request) {
+	RenderHTMLTemplate("register", "./pages/register.html", w, nil)
+}
+
+func (c *Controller) ServeLoginPage(w http.ResponseWriter, r *http.Request) {
+	RenderHTMLTemplate("login", "./pages/login.html", w, nil)
+}
+
 // Web app
 func (c *Controller) ServeAppPage(w http.ResponseWriter, r *http.Request) {
 	userId := r.Context().Value("userid").(string)
@@ -22,12 +35,4 @@ func (c *Controller) ServeAppPage(w http.ResponseWriter, r *http.Request) {
 	}{userName, models.TaskQueryIncompleteByUserID(c.DB, userId), models.TaskQueryCompleteByUserID(c.DB, userId)}
 
 	RenderHTMLTemplate("app", "./pages/app.html", w, data)
-}
-
-func (c *Controller) ServeRegisterPage(w http.ResponseWriter, r *http.Request) {
-	RenderHTMLTemplate("register", "./pages/register.html", w, nil)
-}
-
-func (c *Controller) ServeLoginPage(w http.ResponseWriter, r *http.Request) {
-	RenderHTMLTemplate("login", "./pages/login.html", w, nil)
 }
