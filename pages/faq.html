@@ -1,0 +1,61 @@
+{{ define "faq"}}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TASKS FAQ</title>
+        <link rel="stylesheet" href="/static/css/nav-style.css" />
+        <link rel="shortcut icon" href="/static/images/favicon.ico" />
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            main {
+                display: flex;
+                justify-content: center;
+                font-size: 1.5rem;
+            }
+
+            #faq-container {
+                width: 800px;
+            }
+
+            main h2 {
+                padding: 24px 0;
+            }
+
+            @media (max-width: 800px) {
+                #faq-container {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <h2>[TASKS]</h2>
+            <a href="/">Home</a>
+            <a href="/app">Sign In / Up</a>
+        </nav>
+        <main>
+            <div id="faq-container">
+                <h1 style="text-align: center; padding-bottom: 48px">FAQ</h1>
+                <h2>What is [TASKS]?</h2>
+                Tasks is secretly the worst todo-list management solution (not)
+                on the market. It is meant to demo the entire stack, with user
+                auth included.
+
+                <h2>My eyes!?</h2>
+                Click the [TASKS] text logo to switch to dark mode.
+                <img
+                    src="/static/images/darkmodebutton.jpg"
+                    style="width: 100%; padding: 10px; overflow: hidden"
+                />
+            </div>
+        </main>
+    </body>
+</html>
+{{ end }}

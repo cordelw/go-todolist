@@ -1,0 +1,25 @@
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: overline underline;
+}
+/* NAVBAR */
+nav {
+    top: 0;
+    position: sticky;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    border-bottom: 1px solid black;
+    background-color: white;
+    z-index: 999;
+}
+nav h2 {
+    margin-right: auto;
+}
+nav a {
+    margin: 10px;
+}
