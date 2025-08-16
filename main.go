@@ -7,6 +7,10 @@ import (
 	"gotodo/models"
 	"log"
 	"net/http"
+	"os"
+	"strings"
+
+	"github.com/adrianosela/sslmgr"
 
 	_ "modernc.org/sqlite"
 )
@@ -58,13 +62,29 @@ func main() {
 	router.HandleFunc("GET /app", c.RequiresAuth(c.ServeAppPage))
 
 	// HTTP server
-	server := http.Server{
+	/*server := http.Server{
 		Addr:    lport,
 		Handler: middleware.Logging(router),
-	}
+	}*/
 
 	// Listen and serve
-	if err = server.ListenAndServe(); err != nil {
-		log.Fatal(err)
+	/*if err = server.ListenAndServe(); err != nil {
+	log.Fatal(err)
+	}*/
+
+	server, err := sslmgr.NewServer(sslmgr.ServerConfig{
+		Hostnames: []string{"cordelw.com", "www.cordelw.com"},
+		HTTPPort:  ":8080",
+		HTTPSPort: ":443",
+		Handler:   middleware.Logging(router),
+		ServeSSLFunc: func() bool {
+			return strings.ToLower(os.Getenv("DEV")) != "true"
+		},
+	})
+	if err != nil {
+		log.Fatal(err.Error())
+		return
 	}
+
+	server.ListenAndServe()
 }
