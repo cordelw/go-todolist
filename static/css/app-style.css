@@ -26,7 +26,7 @@ body {
     margin: 0 auto;
 }
 
-@media (max-width: 800px), (pointer: course) {
+@media (pointer: course) {
     :root {
         font-size: 2rem;
     }
