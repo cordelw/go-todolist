@@ -74,7 +74,7 @@ func main() {
 
 	server, err := sslmgr.NewServer(sslmgr.ServerConfig{
 		Hostnames: []string{"cordelw.com", "www.cordelw.com"},
-		HTTPPort:  ":8080",
+		HTTPPort:  os.Getenv("TPORT"),
 		HTTPSPort: ":443",
 		Handler:   middleware.Logging(router),
 		ServeSSLFunc: func() bool {
